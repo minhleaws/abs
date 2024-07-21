@@ -1,5 +1,5 @@
 
-```markdown
+
 # Installation Guide
 
 ## Install Cert Manager
@@ -164,4 +164,4 @@ kubectl apply -f nginx-ingress.yaml
 ## Conclusion
 
 This guide has demonstrated how to install cert-manager, create a ClusterIssuer, Certificate, deploy a test application with Nginx and 42.116.7.14 is my IP Address. If you have any questions or issues, please contact me.
-```
+
