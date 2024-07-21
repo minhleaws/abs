@@ -1,4 +1,3 @@
-Chắc chắn rồi! Dưới đây là phiên bản tiếng Anh của tệp README.md của bạn:
 
 ```markdown
 # Installation Guide
