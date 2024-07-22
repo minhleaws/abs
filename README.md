@@ -94,11 +94,8 @@ spec:
       containers:
       - name: nginx
         image: nginx:1.23.2
-        env:
-        - name: NGINX_PORT
-          value: "8080"
         ports:
-        - containerPort: 8080
+        - containerPort: 80
 ```
 
 Apply the Deployment:
@@ -121,7 +118,7 @@ spec:
   ports:
     - protocol: TCP
       port: 8080
-      targetPort: 8080
+      targetPort: 80
 ```
 
 Apply the Service:
@@ -138,6 +135,8 @@ kind: Ingress
 metadata:
   name: nginx-ingress
   namespace: test
+  annotations:
+    kubernetes.io/ingress.class: nginx
 spec:
   tls:
   - hosts:
