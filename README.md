@@ -2,13 +2,83 @@
 
 # Installation Guide
 
+## Install Nginx controller
+
+Reference: [Nginx ingress controller](https://docs.nginx.com/nginx-ingress-controller/installation/installation-with-manifests/)
+
+### Deploy ingress controller
+
+Pull nginx ingress controller code from github repo:
+
+```sh
+git clone https://github.com/nginxinc/kubernetes-ingress.git --branch v2.4.1
+cd kubernetes-ingress/deployments
+```
+
+Apply manifests to create ingress controller
+
+```sh
+kubectl apply -f common/ns-and-sa.yaml
+kubectl apply -f rbac/rbac.yaml
+kubectl apply -f common/crds/k8s.nginx.org_virtualservers.yaml
+kubectl apply -f common/crds/k8s.nginx.org_virtualserverroutes.yaml
+kubectl apply -f common/crds/k8s.nginx.org_transportservers.yaml
+kubectl apply -f common/crds/k8s.nginx.org_policies.yaml
+kubectl apply -f common/default-server-secret.yaml
+kubectl apply -f common/nginx-config.yaml
+```
+
+For default nginx controller will create an ingress class name nginx. To change ingres class name please update file below
+
+```sh
+vi common/ingress-class.yaml
+```
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  name: nginx # Change this to new ingress class name
+spec:
+  controller: nginx.org/ingress-controller
+```
+
+Apply ingress class
+
+```sh
+kubectl apply -f common/ingress-class.yaml
+```
+
+Deploy nginx deployment
+
+```sh
+kubectl apply -f deployment/nginx-ingress.yaml
+```
+
+Deploy service
+
+For deploy on cloud use service type loadbalancer
+
+```sh
+kubectl apply -f service/loadbalancer.yaml
+```
+
+### Get ingress controller IP
+
+```sh
+kubectl get service -n nginx-ingress
+```
+
+Get external ip for nginx ingress load balancer in EXTERNAL-IP column for using it later
+
 ## Install Cert Manager
 
 
-Create a namespace for cert-manager:
+Create a namespace for cert-manager and test namespace:
 
 ```sh
 kubectl create ns cert-manager
+kubectl create ns test
 ```
 
 Install cert-manager:
@@ -37,7 +107,7 @@ spec:
     solvers:
     - http01:
         ingress:
-          ingressClassName: nginx
+          ingressClassName: nginx # Change it if using diffrent nginx class
 ```
 
 Apply the ClusterIssuer:
@@ -57,7 +127,7 @@ metadata:
 spec:
   secretName: letsencrypt-tls
   dnsNames:
-  - 42.116.7.14.nip.io
+  - 42.116.7.14.nip.io # For testing purpose using nip.io with nginx ingress load balancer external ip
   issuerRef:
     name: letsencrypt-staging
     kind: ClusterIssuer
@@ -140,10 +210,10 @@ metadata:
 spec:
   tls:
   - hosts:
-      - 42.116.7.14.nip.io
+      - 42.116.7.14.nip.io # For testing purpose using nip.io with nginx ingress load balancer external ip
     secretName: letsencrypt-tls
   rules:
-  - host: 42.116.7.14.nip.io
+  - host: 42.116.7.14.nip.io # For testing purpose using nip.io with nginx ingress load balancer external ip
     http:
       paths:
       - path: /
