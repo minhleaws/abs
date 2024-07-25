@@ -87,6 +87,14 @@ kubectl get service -n nginx-ingress
 
 Get node port in PORT(S) column for setting in load balancer
 
+Get worker node ip
+
+```sh
+kubectl get node -o wide
+```
+
+Get node internal ip in INTERNAL-IP column for setting in load balancer
+
 ##### Configure load balancer instance 
 
 We using nginx for load balancer instance
