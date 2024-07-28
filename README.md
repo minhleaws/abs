@@ -76,7 +76,7 @@ Get external ip for nginx ingress load balancer in EXTERNAL-IP column for using 
 ##### Expose service on kubernetes cluster
 
 ```sh
-kubectl apply -f service/loadbalancer.yaml
+kubectl apply -f service/nodeport.yaml
 ```
 
 Get ingress controller port 
