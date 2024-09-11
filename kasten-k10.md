@@ -42,7 +42,7 @@ For access using ingress kasten required authen. We are using authen for this ca
 Generate basic authen string 
 
 ```sh
-htpasswd -bn kasten kasten
+htpasswd -bn <user> <pass>
 ```
 
 Update helm to setting ingress 
