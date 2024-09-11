@@ -27,7 +27,7 @@ kubectl get pods -n kasten-io
 
 ## Access kasten-io from UI
 
-### Access using kubeproxy
+### Access directly using kubectl
 
 ```sh
 kubectl port-forward service/gateway 8080:80 -n kasten-io
